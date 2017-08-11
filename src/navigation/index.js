@@ -49,5 +49,5 @@ export default Actions.create(
         analyticsDesc={'Placeholder: Coming Soon'}
       />
     </Scene>
-  </Scene>,
+  </Scene>, 
 );
