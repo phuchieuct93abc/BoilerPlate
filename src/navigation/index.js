@@ -18,7 +18,7 @@ import AppLaunch from '@containers/Launch/LaunchContainer';
 import Placeholder from '@components/general/Placeholder';
 import AuthScenes from './auth';
 import TabsScenes from './tabs';
-
+import MainContainer from '@containers/main/mainContainer'
 /* Routes ==================================================================== */
 export default Actions.create(
   <Scene key={'root'} {...AppConfig.navbarProps}>
@@ -29,6 +29,12 @@ export default Actions.create(
       analyticsDesc={'AppLaunch: Launching App'}
     />
 
+ <Scene
+      hideNavBar
+      key={'main'}
+      component={MainContainer}
+      analyticsDesc={'AppLaunch: Launching App'}
+    />
     {/* Auth */}
     {AuthScenes}
 

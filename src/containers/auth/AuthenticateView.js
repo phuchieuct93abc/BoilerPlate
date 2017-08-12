@@ -10,10 +10,10 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  StyleSheet,
+  StyleSheet, ToastAndroid
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Container,Form,Item,Input,Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 
 // Consts and Libs
 import { AppStyles, AppSizes, AppColors } from '@theme/';
@@ -40,105 +40,64 @@ const styles = StyleSheet.create({
 /* Component ==================================================================== */
 class Authenticate extends Component {
   static componentName = 'Authenticate';
-  constructor(props){
-super(props);
-console.log("Loading ")
-var   oldCode = (<View style={[AppStyles.containerCentered, AppStyles.container, styles.background]}>
-    <Image
-      source={require('../../images/logo.png')}
-      style={[styles.logo]}
-    />
+  constructor(props) {
+    super(props);
 
-    <View style={[AppStyles.row, AppStyles.paddingHorizontal]}>
-      <View style={[AppStyles.flex1]}>
-        <Button
-          title={'Login'}
-          icon={{ name: 'lock' }}
-          onPress={Actions.login}
-          backgroundColor={'#CB009E'}
-        />
-      </View>
-    </View>
+  }
+  login() {
+     Actions.main() 
+    // let Email = "phuchieu@gmail.com";
+    // let Password = "hieu1234"
+    // this.props.login({ Email, Password }).then(() => {
+    //   Actions.main() 
 
-    <Spacer size={10} />
+    // }).catch(() => {
 
-    <View style={[AppStyles.row, AppStyles.paddingHorizontal]}>
-      <View style={[AppStyles.flex1]}>
-        <Button
-          title={'Sign up'}
-          icon={{ name: 'face' }}
-          onPress={Actions.signUp}
-          backgroundColor={'#CB009E'}
-        />
-      </View>
-    </View>
+    //   ToastAndroid.show('Login failed', ToastAndroid.SHORT);
 
-    <Spacer size={15} />
-
-    <Text p style={[AppStyles.textCenterAligned, styles.whiteText]}>
-      - or -
-      </Text>
-
-    <Spacer size={10} />
-
-    <View style={[AppStyles.row, AppStyles.paddingHorizontal]}>
-      <View style={[AppStyles.flex1]} />
-      <View style={[AppStyles.flex2]}>
-        <Button
-          small
-          title={'Skip'}
-          onPress={Actions.app}
-          raised={false}
-          backgroundColor={'rgba(255,255,255,0.2)'}
-        />
-      </View>
-      <View style={[AppStyles.flex1]} />
-    </View>
-
-    <Spacer size={40} />
-  </View>)
+    // })
   }
 
   render = () => (
-     <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Header</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-         
-            <Form>
-                <Item floatingLabel>
-                  <Label>Username</Label>
-                  <Input />
-                </Item>
-                <Item floatingLabel last>
-                  <Label>Password</Label>
-                  <Input />
-                </Item>
-         
-                    <Button block success onPress={Actions.login}>
-                      <Text>Success</Text>
-                    </Button>
-                
-              </Form>
-         
-        </Content>
-        <Footer>
-          <FooterTab>
-            <Button full>
-              <Text>Footer</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
+    <Container>
+      <Header>
+        <Left>
+          <Button transparent>
+            <Icon name='menu' />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Header</Title>
+        </Body>
+        <Right />
+      </Header>
+      <Content>
+
+        <Form>
+          <Item floatingLabel>
+            <Label>Username</Label>
+            <Input />
+          </Item>
+          <Item floatingLabel last>
+            <Label>Password</Label>
+            <Input />
+          </Item>
+
+          <Button block success onPress={this.login.bind(this)}>
+            <Text>Success</Text>
+          </Button>
+
+        </Form>
+
+      </Content>
+      <Footer>
+        <FooterTab>
+          <Button full>
+            <Text>Footer</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </Container>
   )
 }
 
