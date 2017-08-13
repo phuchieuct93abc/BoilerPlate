@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  StyleSheet, ToastAndroid
+  ToastAndroid, StyleSheet,ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
@@ -21,31 +21,40 @@ import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
 import { Spacer } from '@ui/';
-import { firebaseConnect } from 'react-redux-firebase'
+import { firebaseConnect,isLoaded  } from 'react-redux-firebase'
+import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
 
 /* Styles ==================================================================== */
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor: AppColors.brand.primary,
-    height: AppSizes.screen.height,
-    width: AppSizes.screen.width,
-  },
-  logo: {
-    width: AppSizes.screen.width * 0.85,
-    resizeMode: 'contain',
-  },
-  whiteText: {
-    color: '#FFF',
-  },
-});
+
 
 /* Component ==================================================================== */
+const mapStateToProps = ({ firebase: { auth } }) => ({
+
+
+  auth
+
+})
+
+// Any actions to map to the component?
+const mapDispatchToProps = (dispatch) => ({
+ 
+  nextScene: Actions.main
+});
 @firebaseConnect()
+@connect(mapStateToProps, mapDispatchToProps)
 class Authenticate extends Component {
   static componentName = 'Authenticate';
   constructor(props) {
     super(props);
 
+    console.log("authen",this.props.auth.uid)
+    
+
+  }
+ componentWillUpdate(nextProps, nextState){
+    if(nextProps.auth.uid){
+      nextProps.nextScene()
+    }
   }
   login() {
 
@@ -54,15 +63,19 @@ class Authenticate extends Component {
       email: this.state.username,
       password: this.state.password
 
-    }).then(Actions.main).catch(() => {
+    }).then((item) => {
+      console.log(item)
+         this.props.nextScene()
 
-      ToastAndroid.show('Login failed', ToastAndroid.SHORT);
+    }).catch(() => {
+
+      ToastAndroid.show('Login failed 123', ToastAndroid.SHORT);
 
     })
   }
-signup(){
+  signup() {
 
- this.props.firebase.createUser({
+    this.props.firebase.createUser({
 
       email: this.state.signUpUsername,
       password: this.state.signUpPassword
@@ -74,9 +87,13 @@ signup(){
     })
 
 
-}
-  render = () => (
-    <Container>
+  }
+  render = () => { 
+    console.log(isLoaded(this.props.auth),this.props.auth.uid)
+    if(!isLoaded(this.props.auth)){
+      return <ActivityIndicator/>
+    } 
+    return (<Container>
       <Tabs>
         <Tab heading="Login">
           <Content>
@@ -96,6 +113,18 @@ signup(){
               <Button block success onPress={this.login.bind(this)}>
                 <Text>Success</Text>
               </Button>
+              {/* <FBLogin
+    buttonView={<FBLoginView />}
+    ref={(fbLogin) => { this.fbLogin = fbLogin }}
+    loginBehavior={FBLoginManager.LoginBehaviors.Native}
+    permissions={["email","user_friends"]}
+    onLogin={function(e){console.log(e)}}
+    onLoginFound={function(e){console.log(e)}}
+    onLoginNotFound={function(e){console.log(e)}}
+    onLogout={function(e){console.log(e)}}
+    onCancel={function(e){console.log(e)}}
+    onPermissionsMissing={function(e){console.log(e)}}
+  />  */}
 
             </Form>
 
@@ -105,24 +134,24 @@ signup(){
 
         </Tab>
         <Tab heading="Signup">
-         
-                <Form>
-                  <Item floatingLabel>
-                    <Label>Username</Label>
-                    <Input onChangeText={(signUpUsername) => this.setState({ signUpUsername })} />
-                  </Item>
-                  <Item floatingLabel last>
-                    <Label>Password</Label>
-                    <Input secureTextEntry={true}
-                      onChangeText={(signUpPassword) => this.setState({ signUpPassword })} />
-                  </Item>
 
-                  <Button block success onPress={this.signup.bind(this)}>
-                    <Text>Success</Text>
-                  </Button>
+          <Form>
+            <Item floatingLabel>
+              <Label>Username</Label>
+              <Input onChangeText={(signUpUsername) => this.setState({ signUpUsername })} />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Password</Label>
+              <Input secureTextEntry={true}
+                onChangeText={(signUpPassword) => this.setState({ signUpPassword })} />
+            </Item>
 
-                </Form>
-             
+            <Button block success onPress={this.signup.bind(this)}>
+              <Text>Success</Text>
+            </Button>
+
+          </Form>
+
         </Tab>
 
       </Tabs>
@@ -131,7 +160,7 @@ signup(){
 
 
     </Container>
-  )
+    )}
 }
 
 /* Export Component ==================================================================== */

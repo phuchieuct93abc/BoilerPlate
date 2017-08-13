@@ -22,6 +22,7 @@ import Analytics from '@lib/analytics';
 import rootReducer from '@redux/index';
 import * as firebase from 'firebase'
 import {  reactReduxFirebase } from 'react-redux-firebase';
+import {persistStore, autoRehydrate} from 'redux-persist'
 
 
 
@@ -65,9 +66,15 @@ const store = createStore(
   undefined,
   compose(
     reactReduxFirebase(firebase, config), // pass in firebase instance instead of config
-    applyMiddleware(...middleware)
+    applyMiddleware(...middleware),
+        autoRehydrate()
+
   )
 )
+
+persistStore(store, {blacklist: ['someTransientReducer']}, () => {
+  console.log('rehydration complete')
+})
 /* Component ==================================================================== */
 // Wrap App in Redux provider (makes Redux available to all sub-components)
 export default function AppContainer() {

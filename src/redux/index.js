@@ -13,13 +13,14 @@ import router from '@redux/router/reducer';
 import sideMenu from '@redux/sidemenu/reducer';
 import user from '@redux/user/reducer';
 import recipe from '@redux/recipes/reducer';
-
+import { firebaseStateReducer } from 'react-redux-firebase'
 // Combine all
 const appReducer = combineReducers({
   router,
   sideMenu,
   user,
   recipe,
+  firebase: firebaseStateReducer
 });
 
 // Setup root reducer

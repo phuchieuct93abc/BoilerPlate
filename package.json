@@ -28,6 +28,7 @@
     "react-native-device-info": "^0.10.1",
     "react-native-dotenv": "0.1.0",
     "react-native-elements": "^0.15.0",
+    "react-native-facebook-login": "^1.5.0",
     "react-native-google-analytics-bridge": "^5.0.0",
     "react-native-router-flux": "3.39.2",
     "react-native-side-menu": "^1.0.2",
@@ -37,6 +38,7 @@
     "react-redux-firebase": "2.0.0-beta.5",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^4.8.3",
     "redux-thunk": "^2.1.0",
     "tcomb-form-native": "^0.6.1"
   },
