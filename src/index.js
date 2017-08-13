@@ -20,6 +20,10 @@ import Analytics from '@lib/analytics';
 
 // All redux reducers (rolled into one mega-reducer)
 import rootReducer from '@redux/index';
+import * as firebase from 'firebase'
+import {  reactReduxFirebase } from 'react-redux-firebase';
+
+
 
 // Connect RNRF with Redux
 const RouterWithRedux = connect()(Router);
@@ -38,11 +42,32 @@ if (__DEV__) {
   ];
 }
 
-// Init redux store (using the given reducer & middleware)
-const store = compose(
-  applyMiddleware(...middleware),
-)(createStore)(rootReducer);
+const firebaseConfig = {
+  apiKey: "AIzaSyCa0TF3QOdX-UcK-eNCSTAFhIpK5WzO02w",
+  authDomain: "boilerplate-23818.firebaseapp.com",
+  databaseURL: "https://boilerplate-23818.firebaseio.com",
+  projectId: "boilerplate-23818",
+  storageBucket: "boilerplate-23818.appspot.com",
+  messagingSenderId: "443078071781"
+}
+firebase.initializeApp(firebaseConfig)
+// react-redux-firebase options
+const config = {
+  userProfile: 'users', // firebase root where user profiles are stored
+  enableLogging: false, // enable/disable Firebase's database logging
+  enableRedirectHandling: false // required 
 
+}
+
+
+const store = createStore(
+  rootReducer,
+  undefined,
+  compose(
+    reactReduxFirebase(firebase, config), // pass in firebase instance instead of config
+    applyMiddleware(...middleware)
+  )
+)
 /* Component ==================================================================== */
 // Wrap App in Redux provider (makes Redux available to all sub-components)
 export default function AppContainer() {

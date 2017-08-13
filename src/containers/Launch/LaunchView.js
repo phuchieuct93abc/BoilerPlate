@@ -41,22 +41,23 @@ class AppLaunch extends Component {
   }
 
   componentDidMount = () => {
-    // Show status bar on app launch
-    StatusBar.setHidden(false, true);
+    Actions.authenticate({ type: 'reset' })
+    // // Show status bar on app launch
+    // StatusBar.setHidden(false, true);
 
-    // Preload content here
-    Promise.all([
-      this.props.getMeals(),
-      this.props.getRecipes(),
-    ]).then(() => {
-      // Once we've preloaded basic content,
-      // - Try to authenticate based on existing token
-      this.props.login()
-        // Logged in, show index screen
-        .then(() => Actions.app({ type: 'reset' }))
-        // Not Logged in, show Login screen
-        .catch(() => Actions.authenticate({ type: 'reset' }));
-    }).catch(err => Alert.alert(err.message));
+    // // Preload content here
+    // Promise.all([
+    //   this.props.getMeals(),
+    //   this.props.getRecipes(),
+    // ]).then(() => {
+    //   // // Once we've preloaded basic content,
+    //   // // - Try to authenticate based on existing token
+    //   // this.props.login()
+    //   //   // Logged in, show index screen
+    //   //   .then(() => Actions.app({ type: 'reset' }))
+    //   //   // Not Logged in, show Login screen
+    //   //   .catch(() => Actions.authenticate({ type: 'reset' }));
+    // }).catch(err => Alert.alert(err.message));
   }
 
   render = () => (

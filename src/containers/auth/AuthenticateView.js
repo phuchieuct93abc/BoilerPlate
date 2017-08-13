@@ -13,13 +13,15 @@ import {
   StyleSheet, ToastAndroid
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { connect } from 'react-redux';
 
 // Consts and Libs
 import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
 import { Spacer } from '@ui/';
+import { firebaseConnect } from 'react-redux-firebase'
 
 /* Styles ==================================================================== */
 const styles = StyleSheet.create({
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
 });
 
 /* Component ==================================================================== */
+@firebaseConnect()
 class Authenticate extends Component {
   static componentName = 'Authenticate';
   constructor(props) {
@@ -45,58 +48,88 @@ class Authenticate extends Component {
 
   }
   login() {
-     Actions.main() 
-    // let Email = "phuchieu@gmail.com";
-    // let Password = "hieu1234"
-    // this.props.login({ Email, Password }).then(() => {
-    //   Actions.main() 
 
-    // }).catch(() => {
+    this.props.firebase.login({
 
-    //   ToastAndroid.show('Login failed', ToastAndroid.SHORT);
+      email: this.state.username,
+      password: this.state.password
 
-    // })
+    }).then(Actions.main).catch(() => {
+
+      ToastAndroid.show('Login failed', ToastAndroid.SHORT);
+
+    })
   }
+signup(){
 
+ this.props.firebase.createUser({
+
+      email: this.state.signUpUsername,
+      password: this.state.signUpPassword
+
+    }).then(Actions.main).catch(() => {
+
+      ToastAndroid.show('Signup failed', ToastAndroid.SHORT);
+
+    })
+
+
+}
   render = () => (
     <Container>
-      <Header>
-        <Left>
-          <Button transparent>
-            <Icon name='menu' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Header</Title>
-        </Body>
-        <Right />
-      </Header>
-      <Content>
+      <Tabs>
+        <Tab heading="Login">
+          <Content>
 
-        <Form>
-          <Item floatingLabel>
-            <Label>Username</Label>
-            <Input />
-          </Item>
-          <Item floatingLabel last>
-            <Label>Password</Label>
-            <Input />
-          </Item>
 
-          <Button block success onPress={this.login.bind(this)}>
-            <Text>Success</Text>
-          </Button>
+            <Form>
+              <Item floatingLabel>
+                <Label>Username</Label>
+                <Input onChangeText={(username) => this.setState({ username })} />
+              </Item>
+              <Item floatingLabel last>
+                <Label>Password</Label>
+                <Input secureTextEntry={true}
+                  onChangeText={(password) => this.setState({ password })} />
+              </Item>
 
-        </Form>
+              <Button block success onPress={this.login.bind(this)}>
+                <Text>Success</Text>
+              </Button>
 
-      </Content>
-      <Footer>
-        <FooterTab>
-          <Button full>
-            <Text>Footer</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
+            </Form>
+
+
+          </Content>
+
+
+        </Tab>
+        <Tab heading="Signup">
+         
+                <Form>
+                  <Item floatingLabel>
+                    <Label>Username</Label>
+                    <Input onChangeText={(signUpUsername) => this.setState({ signUpUsername })} />
+                  </Item>
+                  <Item floatingLabel last>
+                    <Label>Password</Label>
+                    <Input secureTextEntry={true}
+                      onChangeText={(signUpPassword) => this.setState({ signUpPassword })} />
+                  </Item>
+
+                  <Button block success onPress={this.signup.bind(this)}>
+                    <Text>Success</Text>
+                  </Button>
+
+                </Form>
+             
+        </Tab>
+
+      </Tabs>
+
+
+
+
     </Container>
   )
 }
