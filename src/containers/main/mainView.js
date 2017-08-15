@@ -19,24 +19,39 @@ import EditableCell from '@components/editableCell'
 import Keyboard from '@components/keyboard'
 
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { solveSudoku } from '../../logics'
 // Consts and Libs
 
 
 
 /* Component ==================================================================== */
 @firebaseConnect()
-@connect(({ firebase: { auth } }) => ({
-  auth
+@connect(
+  ({ firebase: { auth }, currentSudoku: { data } }) => ({
+    auth,
+    table: data
 
-}))
+  }),
+  (dispatch) => (
+
+    {
+      update: (data) => {
+        dispatch({ data: data, type: "UPDATE_SUDOKU" })
+      }
+
+    }
+  )
+
+)
 class MainView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      table: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      table: []
     }
 
   }
+
   logout() {
     this.props.firebase.logout();
     Actions.authenticate()
@@ -50,11 +65,10 @@ class MainView extends Component {
   };
   onPress(value, index) {
     this.setState(index)
-    console.log(value, index)
   }
   generateColumn(item, rowIndex) {
     return item.map((item, columnIndex) => (
-      <Col ><EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} /></Col>
+      <Col key={rowIndex + "_" + columnIndex}><EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} /></Col>
     )
 
 
@@ -63,9 +77,9 @@ class MainView extends Component {
 
     )
   }
-  generateRow(item) {
-    return this.state.table.map((item, rowIndex) => {
-      return (<Row>{this.generateColumn(item, rowIndex)}</Row>)
+  generateRow(table) {
+    return table.map((item, rowIndex) => {
+      return (<Row key={rowIndex}>{this.generateColumn(item, rowIndex)}</Row>)
 
     })
 
@@ -74,14 +88,36 @@ class MainView extends Component {
   generateTable() {
     return (
       <Grid>
-        {this.generateRow(this.state.table)}
+        {this.generateRow(this.props.table)}
       </Grid>)
   }
+  solve() {
+    var self = this;
+    var shouldContinue = true;
+    solveSudoku({ ...{ data: this.props.table } }, 0, 0, (result) => {
+      shouldContinue = false;
+      var test = [[], [], [], [], [], [], [], [], []]
+      result.data.forEach((row, rowIndex) => {
+
+        row.forEach((column, columnIndex) => {
+          test[rowIndex][columnIndex] = column
+
+
+        })
+
+      })
+      self.props.update(test)
+    }, () => {
+      return shouldContinue;
+    }
+    )
+
+  }
   onKeyboardPress(value) {
-    var table = this.state.table;
-    table[this.state.rowIndex][this.state.columnIndex] = value
-    this.setState({table})
-    console.log(value)
+    var currentTable = [...this.props.table]
+currentTable[this.state.rowIndex][this.state.columnIndex] = value
+    this.props.update(currentTable)
+
   }
   render = () => (
 
@@ -103,9 +139,10 @@ class MainView extends Component {
           <Right />
         </Header>
         <Content>
-          <Text>AAAAAAAAAA</Text>
+          <Text>{this.props.table}</Text>
           {this.generateTable()}
           <Keyboard onPress={this.onKeyboardPress.bind(this)} />
+          <Button onPress={this.solve.bind(this)} title="Solve"></Button>
         </Content>
 
       </Container>

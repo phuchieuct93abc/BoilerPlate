@@ -45,16 +45,16 @@ export default class Keyboard extends Component {
 
 
     generateKeyboard() {
-        return [[1, 2, 3], [4, 5, 6], [7, 8, 9]].map((item) => {
+        return [[0,1, 2, 3], [4, 5, 6], [7, 8, 9]].map((item) => {
 
             let columns = item.map((buttonValue) =>
-                (<Col><TouchableOpacity style={style.cell} onPress={() => { this.props.onPress(buttonValue) }}>
+                (<Col key={buttonValue}><TouchableOpacity style={style.cell} onPress={() => { this.props.onPress(buttonValue) }}>
 
                     <Text>{buttonValue}</Text>
                 </TouchableOpacity></Col>)
 
             )
-            return (<Row>
+            return (<Row key={item}>
                 {columns}
             </Row>)
 

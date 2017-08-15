@@ -23,7 +23,7 @@ import rootReducer from '@redux/index';
 import * as firebase from 'firebase'
 import {  reactReduxFirebase } from 'react-redux-firebase';
 import {persistStore, autoRehydrate} from 'redux-persist'
-
+import {AsyncStorage} from 'react-native'
 
 
 // Connect RNRF with Redux
@@ -35,13 +35,13 @@ let middleware = [
   thunk, // Allows action creators to return functions (not just plain objects)
 ];
 
-if (__DEV__) {
-  // Dev-only middleware
-  middleware = [
-    ...middleware,
-    createLogger(), // Logs state changes to the dev console
-  ];
-}
+// if (__DEV__) {
+//   // Dev-only middleware
+//   middleware = [
+//     ...middleware,
+//     createLogger(), // Logs state changes to the dev console
+//   ];
+// }
 
 const firebaseConfig = {
   apiKey: "AIzaSyCa0TF3QOdX-UcK-eNCSTAFhIpK5WzO02w",
@@ -72,8 +72,7 @@ const store = createStore(
   )
 )
 
-persistStore(store, {blacklist: ['someTransientReducer']}, () => {
-  console.log('rehydration complete')
+persistStore(store, {blacklist: ['currentSudoku'],storage: AsyncStorage}, () => {
 })
 /* Component ==================================================================== */
 // Wrap App in Redux provider (makes Redux available to all sub-components)

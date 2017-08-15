@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const style = StyleSheet.create({
     cell: {
-        height: 100,
+        height: 30,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -54,11 +54,17 @@ const style = StyleSheet.create({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EditableCell extends Component {
 
+    show(){
 
+        if(this.props.value!=0){
+            return (  <Text>{this.props.value}</Text>)
+        }
+
+    }
     render = () => (
         
         <TouchableOpacity style={style.cell} onPress={() => { this.props.onPress(this.props.value, this.props.index) }}>
-            <Text>{this.props.value}</Text>
+          {this.show()}
 
         </TouchableOpacity>
 

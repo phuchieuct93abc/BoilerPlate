@@ -47,7 +47,6 @@ class Authenticate extends Component {
   constructor(props) {
     super(props);
 
-    console.log("authen",this.props.auth.uid)
     
 
   }
@@ -64,7 +63,6 @@ class Authenticate extends Component {
       password: this.state.password
 
     }).then((item) => {
-      console.log(item)
          this.props.nextScene()
 
     }).catch(() => {
@@ -89,7 +87,6 @@ class Authenticate extends Component {
 
   }
   render = () => { 
-    console.log(isLoaded(this.props.auth),this.props.auth.uid)
     if(!isLoaded(this.props.auth)){
       return <ActivityIndicator/>
     } 
