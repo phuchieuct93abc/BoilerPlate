@@ -1,4 +1,4 @@
-var initTable = [
+const initTable = [
       [6, 7, 0, 4, 0, 0, 0, 0, 0],
       [0, 0, 1, 8, 9, 7, 0, 0, 6],
       [0, 0, 0, 0, 6, 0, 0, 0, 0],
@@ -18,18 +18,13 @@ export default function currentSudoku(state = {data:initTable}, action) {
           data:action.data
       };
     }
-    case 'UPDATA_VALUE': {
-      var x = action.data.x
-      var y = action.data.y
-      var value = action.data.value
-      var data = [...action.data]
-      data[x][y] = value
-
-      return {
-          ...state,
-          datadata
-      };
-    }
+    case 'RESET_SUDOKU': {
+            return {
+                ...state,
+                data:initTable
+            };
+          }
+    
    
     default:
       return state;

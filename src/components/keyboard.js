@@ -1,11 +1,3 @@
-/**
- * Authenticate Screen
- *  - Entry screen for all authentication
- *  - User can tap to login, forget password, signup...
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
- */
 import React, { Component } from 'react';
 import {
     View,
@@ -13,9 +5,9 @@ import {
     ToastAndroid, StyleSheet, ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body,  Text } from 'native-base';
 import { connect } from 'react-redux';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 // Consts and Libs
 import { AppStyles, AppSizes, AppColors } from '@theme/';
 
@@ -32,26 +24,28 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 
 const style = StyleSheet.create({
     cell: {
-        height: 50,
-       flex:1,
+        height: 30,
+        flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "yellow"
+        alignItems: "center"
     }
 
 
 })
+const buttons = [[1, 2, 3], [4,5,6],[7,8,9]]
 export default class Keyboard extends Component {
 
 
     generateKeyboard() {
-        return [[0,1, 2, 3], [4, 5, 6], [7, 8, 9]].map((item) => {
+        return buttons.map((item) => {
 
             let columns = item.map((buttonValue) =>
-                (<Col key={buttonValue}><TouchableOpacity style={style.cell} onPress={() => { this.props.onPress(buttonValue) }}>
+                (<Col key={buttonValue}>
+                    <Button  full transparent onPress={() => { this.props.onPress(buttonValue) }}>
 
-                    <Text>{buttonValue}</Text>
-                </TouchableOpacity></Col>)
+                        <Text style={style.cell}>{buttonValue}</Text>
+                    </Button>
+                </Col>)
 
             )
             return (<Row key={item}>
@@ -63,17 +57,30 @@ export default class Keyboard extends Component {
     }
 
     render = () => (
+            
+                <Card>
+                <Grid>
+                    <Col size={7}>
+                    {this.generateKeyboard()}
+                    </Col>
+                    <Col >
+                    <TouchableOpacity onPress={() => { this.props.onPress(0) }} style={{flex:1,justifyContent:"center"}}>
+                    <Icon size={20} name='remove' style={{color:"red"}} />
+                    </TouchableOpacity>
+                  
+
+                    </Col>
+                </Grid>
+                </Card>
+            
+     
 
 
- <Grid>
-                {this.generateKeyboard()}
-            </Grid>
-
-       
 
 
-            )
+
+
+    )
 }
 
-/* Export Component ==================================================================== */
 ;

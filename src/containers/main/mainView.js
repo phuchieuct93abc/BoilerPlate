@@ -12,7 +12,7 @@ import {
   View
 
 } from 'react-native';
-import { Drawer, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base'; import { Actions } from 'react-native-router-flux';
+import { Drawer, Container, Card, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base'; import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import EditableCell from '@components/editableCell'
@@ -37,6 +37,9 @@ import { solveSudoku } from '../../logics'
     {
       update: (data) => {
         dispatch({ data: data, type: "UPDATE_SUDOKU" })
+      },
+      reset:()=>{
+        dispatch({ type: "RESET_SUDOKU" })
       }
 
     }
@@ -114,11 +117,12 @@ class MainView extends Component {
 
   }
   onKeyboardPress(value) {
-    var currentTable = [...this.props.table]
-currentTable[this.state.rowIndex][this.state.columnIndex] = value
+    var currentTable = ...this.props.table
+    currentTable[this.state.rowIndex][this.state.columnIndex] = value
     this.props.update(currentTable)
 
   }
+  reset() { }
   render = () => (
 
     <Drawer
@@ -133,16 +137,26 @@ currentTable[this.state.rowIndex][this.state.columnIndex] = value
             </Button>
           </Left>
           <Body>
-            <Title>Header</Title>
+            <Title>Souduko Solver</Title>
 
           </Body>
           <Right />
         </Header>
-        <Content>
-          <Text>{this.props.table}</Text>
-          {this.generateTable()}
+        <Content style={{ padding: 10 }}>
+          <Card>
+            {this.generateTable()}
+          </Card>
           <Keyboard onPress={this.onKeyboardPress.bind(this)} />
-          <Button onPress={this.solve.bind(this)} title="Solve"></Button>
+          <Grid>
+            <Col><Button rounded block onPress={this.solve.bind(this)} ><Text>Solve</Text></Button>
+            </Col>
+            <Col><Button transparent block onPress={this.reset.bind(this)} ><Text>New</Text></Button>
+            </Col>
+            <Col>
+              <Button transparent block onPress={this.props.reset} ><Text>Reset</Text></Button>
+            </Col>
+
+          </Grid>
         </Content>
 
       </Container>
