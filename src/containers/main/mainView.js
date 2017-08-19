@@ -13,7 +13,7 @@ import Keyboard from '@components/keyboard'
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { solveSudoku } from '../../logics'
 // Consts and Libs
-
+import Table from "../../components/table"
 
 
 /* Component ==================================================================== */
@@ -27,9 +27,9 @@ import { solveSudoku } from '../../logics'
   (dispatch) => (
 
     {
-      new:()=>{
-        dispatch({  type: "NEW_SUDOKU" })
-        
+      new: () => {
+        dispatch({ type: "NEW_SUDOKU" })
+
       },
       set: (data) => {
         dispatch({ data: data, type: "SET_SUDOKU" })
@@ -47,6 +47,10 @@ import { solveSudoku } from '../../logics'
 
 )
 export default class MainView extends Component {
+  constructor(props) {
+    super(props)
+    this.isShowKeyboard = this.isShowKeyboard.bind(this)
+  }
   logout() {
     this.props.firebase.logout();
     Actions.authenticate()
@@ -58,36 +62,17 @@ export default class MainView extends Component {
   openDrawer = () => {
     this.drawer._root.open()
   };
-  onPress(value, index) {
+  onPress(index) {
     this.setState(index)
   }
-  generateColumn(item, rowIndex) {
-    return item.map((item, columnIndex) => (
-      <Col key={rowIndex + "_" + columnIndex}><EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} /></Col>
-    )
-    )
-  }
-  generateRow(table) {
-    return table.map((item, rowIndex) => {
-      return (<Row key={rowIndex}>{this.generateColumn(item, rowIndex)}</Row>)
 
-    })
-
-
-  }
-  generateTable() {
-    return (
-      <Grid>
-        {this.generateRow(this.props.table)}
-      </Grid>)
-  }
   solve() {
     var self = this;
     var shouldContinue = true;
-    solveSudoku( this.props.table, 0, 0, (result) => {
+    solveSudoku(this.props.table, 0, 0, (result) => {
       shouldContinue = false;
       console.log(result)
-     
+
       self.props.set(result)
     }, () => {
       return shouldContinue;
@@ -105,7 +90,9 @@ export default class MainView extends Component {
     this.props.update(updateData)
 
   }
-  reset() { }
+  isShowKeyboard() {
+    return this.state && this.state.rowIndex != null;
+  }
   render = () => (
 
     <Drawer
@@ -114,7 +101,7 @@ export default class MainView extends Component {
       onClose={() => this.closeDrawer()} >
       <Container>
         <Header>
-         
+
           <Body>
             <Title>Souduko Solver</Title>
 
@@ -122,9 +109,12 @@ export default class MainView extends Component {
         </Header>
         <Content style={{ padding: 10 }}>
           <Card>
-            {this.generateTable()}
-          </Card>
-          <Keyboard onPress={this.onKeyboardPress.bind(this)} />
+            <Table table={this.props.table} onSelect={this.props.onPress} />
+          </Card>{
+            this.isShowKeyboard() && <Keyboard onPress={this.onKeyboardPress.bind(this)} />
+
+          }
+
           <Grid>
             <Col><Button rounded block onPress={this.solve.bind(this)} ><Text>Solve</Text></Button>
             </Col>

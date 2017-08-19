@@ -1,0 +1,63 @@
+
+import React, { Component } from 'react';
+import {
+    View,
+    Image,
+    ToastAndroid, StyleSheet, ActivityIndicator
+} from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { connect } from 'react-redux';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+import EditableCell from '@components/editableCell'
+import * as Animatable from 'react-native-animatable';
+// Consts and Libs
+import { AppStyles, AppSizes, AppColors } from '@theme/';
+
+// Components
+import { Spacer } from '@ui/';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase'
+import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
+import { TouchableOpacity } from "react-native"
+
+export default class Table extends Component {
+    onPress(value, index) {
+        this.props.onSelect(index)
+    }
+    generateColumn(item, rowIndex) {
+        return item.map((item, columnIndex) => {
+            var editableCell = <EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} />
+            var {selectedRowIndex,selectedColumnIndex } = this.props.selectedCell
+            if(selectedRowIndex == rowIndex && selectedColumnIndex ==columnIndex){
+
+                
+            }
+            return (<Col key={rowIndex + "_" + columnIndex}>
+                {editableCell}
+            </Col>)
+        }
+        )
+    }
+    generateRow(table) {
+        return table.map((item, rowIndex) => {
+            return (<Row key={rowIndex}>{this.generateColumn(item, rowIndex)}</Row>)
+
+        })
+
+
+    }
+    generateTable() {
+        return (
+            <Grid>
+                {this.generateRow(this.props.table)}
+            </Grid>)
+    }
+    render = () => (
+        <View>
+            {this.generateTable()}
+        </View>
+
+    );
+
+}
+
