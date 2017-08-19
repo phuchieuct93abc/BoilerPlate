@@ -18,12 +18,11 @@ import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-logi
 const mapStateToProps = ({ firebase: { auth } }) => ({
   auth
 })
-
 // Any actions to map to the component?
 const mapDispatchToProps = (dispatch) => ({});
 @firebaseConnect()
 @connect(mapStateToProps, mapDispatchToProps)
-class AppLaunch extends Component {
+export default class AppLaunch extends Component {
   static componentName = 'AppLaunch';
 
 
@@ -35,24 +34,12 @@ class AppLaunch extends Component {
       if (this.props.auth.uid) {
         Actions.main({ type: 'reset' })
 
+      }else{
+        Actions.authenticate({ type: 'reset' })
+        
       }
     }
-    // // Show status bar on app launch
-    // StatusBar.setHidden(false, true);
-
-    // // Preload content here
-    // Promise.all([
-    //   this.props.getMeals(),
-    //   this.props.getRecipes(),
-    // ]).then(() => {
-    //   // // Once we've preloaded basic content,
-    //   // // - Try to authenticate based on existing token
-    //   // this.props.login()
-    //   //   // Logged in, show index screen
-    //   //   .then(() => Actions.app({ type: 'reset' }))
-    //   //   // Not Logged in, show Login screen
-    //   //   .catch(() => Actions.authenticate({ type: 'reset' }));
-    // }).catch(err => Alert.alert(err.message));
+    
   }
 
   render = () => (
@@ -67,6 +54,3 @@ class AppLaunch extends Component {
     </View>
   );
 }
-
-/* Export Component ==================================================================== */
-export default AppLaunch;

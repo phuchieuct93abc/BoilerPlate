@@ -35,10 +35,14 @@ import { solveSudoku } from '../../logics'
   (dispatch) => (
 
     {
+      set: (data) => {
+        dispatch({ data: data, type: "SET_SUDOKU" })
+
+      },
       update: (data) => {
         dispatch({ data: data, type: "UPDATE_SUDOKU" })
       },
-      reset:()=>{
+      reset: () => {
         dispatch({ type: "RESET_SUDOKU" })
       }
 
@@ -46,15 +50,7 @@ import { solveSudoku } from '../../logics'
   )
 
 )
-class MainView extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      table: []
-    }
-
-  }
-
+export default class MainView extends Component {
   logout() {
     this.props.firebase.logout();
     Actions.authenticate()
@@ -73,11 +69,6 @@ class MainView extends Component {
     return item.map((item, columnIndex) => (
       <Col key={rowIndex + "_" + columnIndex}><EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} /></Col>
     )
-
-
-
-
-
     )
   }
   generateRow(table) {
@@ -97,19 +88,11 @@ class MainView extends Component {
   solve() {
     var self = this;
     var shouldContinue = true;
-    solveSudoku({ ...{ data: this.props.table } }, 0, 0, (result) => {
+    solveSudoku( this.props.table, 0, 0, (result) => {
       shouldContinue = false;
-      var test = [[], [], [], [], [], [], [], [], []]
-      result.data.forEach((row, rowIndex) => {
-
-        row.forEach((column, columnIndex) => {
-          test[rowIndex][columnIndex] = column
-
-
-        })
-
-      })
-      self.props.update(test)
+      console.log(result)
+     
+      self.props.set(result)
     }, () => {
       return shouldContinue;
     }
@@ -117,9 +100,13 @@ class MainView extends Component {
 
   }
   onKeyboardPress(value) {
-    var currentTable = [...this.props.table]
-    currentTable[this.state.rowIndex][this.state.columnIndex] = value
-    this.props.update(currentTable)
+    var updateData = {
+      rowIndex: this.state.rowIndex,
+      columnIndex: this.state.columnIndex,
+      value
+    }
+
+    this.props.update(updateData)
 
   }
   reset() { }
@@ -166,6 +153,4 @@ class MainView extends Component {
   );
 }
 
-/* Export Component ==================================================================== */
 
-export default MainView;

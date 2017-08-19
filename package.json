@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "firebase": "^4.1.2",
+    "immutability-helper": "^2.3.1",
     "native-base": "2.2.0",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.6",
@@ -40,8 +41,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.8.3",
     "redux-thunk": "^2.1.0",
-    "tcomb-form-native": "^0.6.1",
-    "SudokuJS":"0.4.6"
+    "tcomb-form-native": "^0.6.1"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

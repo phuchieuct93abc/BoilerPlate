@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 let arrays = Array.from(Array(10).keys())
 let isValid = (table, x, y, checkValue) => {
     let result = true;
@@ -50,31 +51,43 @@ const feasible = (S, x, y, k) => {
 
 }
 
-export const solveSudoku = (inputData, x, y,callback,shouldContinue) => {
-    if(!shouldContinue()){
+export const solveSudoku = (S, x, y, callback, shouldContinue) => {
+    if (!shouldContinue()) {
         return;
     }
-    var S = {...inputData}
+  
     if (y == NUMBER) {
-        if (x == NUMBER-1) {
+        if (x == NUMBER - 1) {
             callback(S);
         } else {
 
-            solveSudoku(S, x + 1, 0,callback,shouldContinue);
+            solveSudoku(S, x + 1, 0, callback, shouldContinue);
         }
-    } else if (S['data'][x][y] == 0) {
+    } else if (S[x][y] == 0) {
         var k = 0;
         for (k = 1; k <= NUMBER; k++) {
-            if (feasible(S['data'], x, y, k)) {
-                S['data'][x][y] = k;
-                solveSudoku(S, x, y + 1,callback,shouldContinue);
-                S['data'][x][y] = 0;
+            if (feasible(S, x, y, k)) {
+                var newTable = updateImmutable(S,x,y,k)
+                solveSudoku(newTable, x, y + 1, callback, shouldContinue);
+                S[x][y] = 0;
             }
         }
     } else {
-        solveSudoku(S, x, y + 1,callback,shouldContinue);
+        solveSudoku(S, x, y + 1, callback, shouldContinue);
     }
 
 
+
+}
+
+export const updateImmutable = (array, rowIndex, columnIndex, value) => {
+
+
+
+    var updateColumnValue = {}
+    updateColumnValue[columnIndex] = { $set: value }
+    var updateConfig = {}
+    updateConfig[rowIndex] = updateColumnValue
+    return update(array, updateConfig);
 
 }
