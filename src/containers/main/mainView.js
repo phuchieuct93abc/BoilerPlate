@@ -1,12 +1,4 @@
-/**
- * Launch Screen
- *  - Shows a nice loading screen whilst:
- *    - Preloading any specified app content
- *    - Checking if user is logged in, and redirects from there
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
- */
+
 import React, { Component } from 'react';
 import {
   View
@@ -35,6 +27,10 @@ import { solveSudoku } from '../../logics'
   (dispatch) => (
 
     {
+      new:()=>{
+        dispatch({  type: "NEW_SUDOKU" })
+        
+      },
       set: (data) => {
         dispatch({ data: data, type: "SET_SUDOKU" })
 
@@ -118,16 +114,11 @@ export default class MainView extends Component {
       onClose={() => this.closeDrawer()} >
       <Container>
         <Header>
-          <Left>
-            <Button transparent onPress={this.openDrawer.bind(this)}>
-              <Icon name='menu' />
-            </Button>
-          </Left>
+         
           <Body>
             <Title>Souduko Solver</Title>
 
           </Body>
-          <Right />
         </Header>
         <Content style={{ padding: 10 }}>
           <Card>
@@ -137,7 +128,7 @@ export default class MainView extends Component {
           <Grid>
             <Col><Button rounded block onPress={this.solve.bind(this)} ><Text>Solve</Text></Button>
             </Col>
-            <Col><Button transparent block onPress={this.reset.bind(this)} ><Text>New</Text></Button>
+            <Col><Button transparent block onPress={this.props.new} ><Text>New</Text></Button>
             </Col>
             <Col>
               <Button transparent block onPress={this.props.reset} ><Text>Reset</Text></Button>

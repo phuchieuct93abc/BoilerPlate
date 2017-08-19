@@ -49,6 +49,12 @@ export default function currentSudoku(state = { data: initTable }, { type, data 
         data: initTable
       };
     }
+    case 'NEW_SUDOKU': {
+      return {
+        ...state,
+        data: sampleTable
+      };
+    }
 
 
     default:
