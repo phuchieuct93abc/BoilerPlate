@@ -1,47 +1,42 @@
-/**
- * Launch Screen
- *  - Shows a nice loading screen whilst:
- *    - Preloading any specified app content
- *    - Checking if user is logged in, and redirects from there
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
- */
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
-  View,
-  Image,
-  Alert,
-  StatusBar,
-  StyleSheet,
   ActivityIndicator,
+  View
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { connect } from 'react-redux';
 
 // Consts and Libs
-import { AppStyles, AppSizes } from '@theme/';
+import { AppStyles, AppSizes, AppColors } from '@theme/';
 
-/* Styles ==================================================================== */
-const styles = StyleSheet.create({
-  launchImage: {
-    width: AppSizes.screen.width,
-    height: AppSizes.screen.height,
-  },
-});
+// Components
+import { Spacer } from '@ui/';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase'
+import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
+const mapStateToProps = ({ firebase: { auth } }) => ({
+  auth
+})
 
-/* Component ==================================================================== */
+// Any actions to map to the component?
+const mapDispatchToProps = (dispatch) => ({});
+@firebaseConnect()
+@connect(mapStateToProps, mapDispatchToProps)
 class AppLaunch extends Component {
   static componentName = 'AppLaunch';
 
-  static propTypes = {
-    login: PropTypes.func.isRequired,
-    getRecipes: PropTypes.func.isRequired,
-    getMeals: PropTypes.func.isRequired,
-  }
 
-  componentDidMount = () => {
-    Actions.authenticate({ type: 'reset' })
+
+  componentDidUpdate = () => {
+    console.log(this.props.auth.uid)
+
+    if (isLoaded) {
+      if (this.props.auth.uid) {
+        Actions.main({ type: 'reset' })
+
+      }
+    }
     // // Show status bar on app launch
     // StatusBar.setHidden(false, true);
 
@@ -61,17 +56,14 @@ class AppLaunch extends Component {
   }
 
   render = () => (
-    <View style={[AppStyles.container]}>
-      <Image
-        source={require('../../images/launch.jpg')}
-        style={[styles.launchImage, AppStyles.containerCentered]}
-      >
-        <ActivityIndicator
-          animating
-          size={'large'}
-          color={'#C1C5C8'}
-        />
-      </Image>
+    <View>
+
+      <ActivityIndicator
+        animating
+        size={'large'}
+        color={'#C1C5C8'}
+      />
+
     </View>
   );
 }

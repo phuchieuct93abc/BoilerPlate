@@ -117,7 +117,7 @@ class MainView extends Component {
 
   }
   onKeyboardPress(value) {
-    var currentTable = ...this.props.table
+    var currentTable = [...this.props.table]
     currentTable[this.state.rowIndex][this.state.columnIndex] = value
     this.props.update(currentTable)
 

@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  ToastAndroid, StyleSheet,ActivityIndicator
+  ToastAndroid, StyleSheet, ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
@@ -21,7 +21,7 @@ import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
 import { Spacer } from '@ui/';
-import { firebaseConnect,isLoaded  } from 'react-redux-firebase'
+import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
 
 /* Styles ==================================================================== */
@@ -29,32 +29,16 @@ import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-logi
 
 /* Component ==================================================================== */
 const mapStateToProps = ({ firebase: { auth } }) => ({
-
-
   auth
-
 })
 
-// Any actions to map to the component?
 const mapDispatchToProps = (dispatch) => ({
- 
   nextScene: Actions.main
 });
 @firebaseConnect()
 @connect(mapStateToProps, mapDispatchToProps)
 class Authenticate extends Component {
   static componentName = 'Authenticate';
-  constructor(props) {
-    super(props);
-
-    
-
-  }
- componentWillUpdate(nextProps, nextState){
-    if(nextProps.auth.uid){
-      nextProps.nextScene()
-    }
-  }
   login() {
 
     this.props.firebase.login({
@@ -63,7 +47,7 @@ class Authenticate extends Component {
       password: this.state.password
 
     }).then((item) => {
-         this.props.nextScene()
+      this.props.nextScene()
 
     }).catch(() => {
 
@@ -86,10 +70,10 @@ class Authenticate extends Component {
 
 
   }
-  render = () => { 
-    if(!isLoaded(this.props.auth)){
-      return <ActivityIndicator/>
-    } 
+  render = () => {
+    if (!isLoaded(this.props.auth)) {
+      return <ActivityIndicator />
+    }
     return (<Container>
       <Tabs>
         <Tab heading="Login">
@@ -157,7 +141,8 @@ class Authenticate extends Component {
 
 
     </Container>
-    )}
+    )
+  }
 }
 
 /* Export Component ==================================================================== */

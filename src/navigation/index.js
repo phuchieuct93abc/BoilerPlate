@@ -14,7 +14,7 @@ import { AppConfig } from '@constants/';
 import Drawer from '@containers/ui/DrawerContainer';
 
 // Scenes
-import AppLaunch from '@containers/Launch/LaunchContainer';
+import AppLaunch from '@containers/Launch/LaunchView';
 import Placeholder from '@components/general/Placeholder';
 import AuthenticateView from '@containers/auth/AuthenticateView';
 import TabsScenes from './tabs';
@@ -22,6 +22,7 @@ import mainView from '@containers/main/mainView'
 /* Routes ==================================================================== */
 export default Actions.create(
   <Scene key={'root'} {...AppConfig.navbarProps}>
+<Scene hideNavBar component={AppLaunch} key="launch"/>
 
 <Scene hideNavBar component={AuthenticateView} key="authenticate"/>
 
