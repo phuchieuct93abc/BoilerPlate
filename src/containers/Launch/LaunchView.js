@@ -28,9 +28,9 @@ export default class AppLaunch extends Component {
 
 
   componentDidUpdate = () => {
-    console.log(this.props.auth.uid)
 
     if (isLoaded) {
+      
       if (this.props.auth.uid) {
         Actions.main({ type: 'reset' })
 

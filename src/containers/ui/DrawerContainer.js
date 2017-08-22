@@ -6,7 +6,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View,Text } from 'react-native';
 import { connect } from 'react-redux';
 import SideMenu from 'react-native-side-menu';
 import { DefaultRenderer } from 'react-native-router-flux';
@@ -33,7 +33,7 @@ const mapDispatchToProps = {
 };
 
 /* Component ==================================================================== */
-class Drawer extends Component {
+class DrawerView extends Component {
   static componentName = 'Drawer';
 
   static propTypes = {
@@ -61,13 +61,12 @@ class Drawer extends Component {
   }
 
   render() {
-    const state = this.props.navigationState;
-    const children = state.children;
+   
 
     return (
       <SideMenu
         ref={(a) => { this.rootSidebarMenu = a; }}
-        openMenuOffset={AppSizes.screen.width * 0.75}
+        openMenuOffset={AppSizes.screen.width }
         menu={
           <Menu
             closeSideMenu={this.props.closeSideMenu}
@@ -77,14 +76,11 @@ class Drawer extends Component {
         isOpen={this.props.sideMenuIsOpen}
         onChange={this.onSideMenuChange}
         disableGestures
-      >
-        <View style={{ backgroundColor: '#000', flex: 1 }}>
-          <DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} />
-        </View>
-      </SideMenu>
+      />
+       
     );
   }
 }
 
 /* Export Component ==================================================================== */
-export default connect(mapStateToProps, mapDispatchToProps)(Drawer);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerView);

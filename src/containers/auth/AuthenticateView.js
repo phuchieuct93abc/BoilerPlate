@@ -22,8 +22,8 @@ import { AppStyles, AppSizes, AppColors } from '@theme/';
 // Components
 import { Spacer } from '@ui/';
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
-import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
-
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
+import FBLoginView from './FBLoginView'
 /* Styles ==================================================================== */
 
 
@@ -70,6 +70,18 @@ class Authenticate extends Component {
 
 
   }
+  onLoginFB({ credentials: { token } }) {
+
+    let credential = this.props.firebase.auth.FacebookAuthProvider.credential(token);
+
+    this.props.firebase.auth().signInWithCredential(credential)
+      .then((user) => {
+        Actions.main()
+      }).catch((err) => {
+        ToastAndroid.show('Signup failed', ToastAndroid.SHORT);
+      });
+
+  }
   render = () => {
     if (!isLoaded(this.props.auth)) {
       return <ActivityIndicator />
@@ -94,18 +106,18 @@ class Authenticate extends Component {
               <Button block success onPress={this.login.bind(this)}>
                 <Text>Success</Text>
               </Button>
-              {/* <FBLogin
-    buttonView={<FBLoginView />}
-    ref={(fbLogin) => { this.fbLogin = fbLogin }}
-    loginBehavior={FBLoginManager.LoginBehaviors.Native}
-    permissions={["email","user_friends"]}
-    onLogin={function(e){console.log(e)}}
-    onLoginFound={function(e){console.log(e)}}
-    onLoginNotFound={function(e){console.log(e)}}
-    onLogout={function(e){console.log(e)}}
-    onCancel={function(e){console.log(e)}}
-    onPermissionsMissing={function(e){console.log(e)}}
-  />  */}
+              <FBLogin
+                buttonView={<FBLoginView />}
+                ref={(fbLogin) => { this.fbLogin = fbLogin }}
+                loginBehavior={FBLoginManager.LoginBehaviors.Native}
+                permissions={["email", "user_friends"]}
+                onLogin={this.onLoginFB.bind(this)}
+                onLoginFound={function (e) { console.log(e) }}
+                onLoginNotFound={function (e) { console.log(e) }}
+                onLogout={function (e) { console.log(e) }}
+                onCancel={function (e) { console.log(e) }}
+                onPermissionsMissing={function (e) { console.log(e) }}
+              />
 
             </Form>
 

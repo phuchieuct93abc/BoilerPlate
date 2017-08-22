@@ -27,11 +27,14 @@ export default class Table extends Component {
     generateColumn(item, rowIndex) {
         return item.map((item, columnIndex) => {
             var editableCell = <EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} />
-            var {selectedRowIndex,selectedColumnIndex } = this.props.selectedCell
-            if(selectedRowIndex == rowIndex && selectedColumnIndex ==columnIndex){
-
-                
+            if(this.props.selectedCell){
+                var {selectedRowIndex,selectedColumnIndex } = this.props.selectedCell
+                if(selectedRowIndex == rowIndex && selectedColumnIndex ==columnIndex){
+    
+                    
+                }
             }
+            
             return (<Col key={rowIndex + "_" + columnIndex}>
                 {editableCell}
             </Col>)

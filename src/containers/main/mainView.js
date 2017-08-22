@@ -14,6 +14,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { solveSudoku } from '../../logics'
 // Consts and Libs
 import Table from "../../components/table"
+import Sidebar from "./sidebar"
+import DrawerView from '@containers/ui/DrawerContainer';
 
 
 /* Component ==================================================================== */
@@ -97,11 +99,15 @@ export default class MainView extends Component {
 
     <Drawer
       ref={(ref) => { this.drawer = ref; }}
-      content={<Text>{this.props.auth.email}</Text>}
+      content={<DrawerView/>}
       onClose={() => this.closeDrawer()} >
       <Container>
         <Header>
-
+        <Left>
+            <Button transparent onPress={this.openDrawer.bind(this)}>
+              <Icon name='menu' />
+            </Button>
+          </Left>
           <Body>
             <Title>Souduko Solver</Title>
 
