@@ -34,8 +34,10 @@ const style = StyleSheet.create({
 @firebaseConnect()
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Profile extends Component {
+
+
     render = () => (
-        {}
+        
         <Container>
             <Body>
                 <Image

@@ -114,7 +114,7 @@ export default class MainView extends Component {
         </Header>
         <Content style={{ padding: 10 }}>
           <Card>
-            <Table table={this.props.table} onSelect={this.props.onPress} />
+            <Table table={this.props.table} onSelect={this.onPress.bind(this)} />
           </Card>{
             this.isShowKeyboard() && <Keyboard onPress={this.onKeyboardPress.bind(this)} />
 
