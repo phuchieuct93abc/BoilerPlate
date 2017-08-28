@@ -6,16 +6,14 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View,Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import SideMenu from 'react-native-side-menu';
 import { DefaultRenderer } from 'react-native-router-flux';
-
 // Consts and Libs
-import { AppSizes } from '@theme/';
-
-// Containers
-import Menu from '@containers/ui/Menu/MenuContainer';
+import { AppSizes,AppColors } from '@theme/';
+import Profile from '../../components/profile';
+import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Label, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 
 /* Redux ==================================================================== */
 // Actions
@@ -64,19 +62,11 @@ class DrawerView extends Component {
    
 
     return (
-      <SideMenu
-        ref={(a) => { this.rootSidebarMenu = a; }}
-        openMenuOffset={AppSizes.screen.width }
-        menu={
-          <Menu
-            closeSideMenu={this.props.closeSideMenu}
-            ref={(b) => { this.rootSidebarMenuMenu = b; }}
-          />
-        }
-        isOpen={this.props.sideMenuIsOpen}
-        onChange={this.onSideMenuChange}
-        disableGestures
-      />
+      <Container style={{backgroundColor:AppColors.background}}>
+           <Profile/>
+
+      </Container>
+    
        
     );
   }

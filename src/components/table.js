@@ -15,7 +15,6 @@ import * as Animatable from 'react-native-animatable';
 import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
-import { Spacer } from '@ui/';
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
 import { TouchableOpacity } from "react-native"

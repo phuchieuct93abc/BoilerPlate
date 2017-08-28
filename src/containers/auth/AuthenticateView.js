@@ -20,7 +20,6 @@ import { connect } from 'react-redux';
 import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
-import { Spacer } from '@ui/';
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import FBLoginView from './FBLoginView'

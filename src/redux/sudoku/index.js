@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import {updateImmutable} from '../../logics'
+import { updateImmutable } from '../../logics'
 const sampleTable = [
   [6, 7, 0, 4, 0, 0, 0, 0, 0],
   [0, 0, 1, 8, 9, 7, 0, 0, 6],
@@ -21,13 +21,13 @@ const initTable = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  
+
 ]
 export default function currentSudoku(state = { data: initTable }, { type, data }) {
   switch (type) {
     case 'UPDATE_SUDOKU': {
-      var {rowIndex,columnIndex,value} = data
-      const newObj = updateImmutable(state.data, rowIndex,columnIndex,value);
+      var { rowIndex, columnIndex, value } = data
+      const newObj = updateImmutable(state.data, rowIndex, columnIndex, value);
 
       return {
         ...state,
@@ -35,7 +35,7 @@ export default function currentSudoku(state = { data: initTable }, { type, data 
       };
     }
     case 'SET_SUDOKU': {
-      const newObj = update(state.data,{ $set: data });
+      const newObj = update(state.data, { $set: data });
       console.log(newObj)
       return {
         ...state,

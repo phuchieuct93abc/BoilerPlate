@@ -15,9 +15,7 @@ import Drawer from '@containers/ui/DrawerContainer';
 
 // Scenes
 import AppLaunch from '@containers/Launch/LaunchView';
-import Placeholder from '@components/general/Placeholder';
 import AuthenticateView from '@containers/auth/AuthenticateView';
-import TabsScenes from './tabs';
 import mainView from '@containers/main/mainView'
 /* Routes ==================================================================== */
 export default Actions.create(
@@ -33,22 +31,5 @@ export default Actions.create(
       analyticsDesc={'AppLaunch: Launching App'}
     />
 
-    {/* Main App */}
-    <Scene key={'app'} {...AppConfig.navbarProps} title={AppConfig.appName} hideNavBar={false} type={ActionConst.RESET}>
-      {/* Drawer Side Menu */}
-      <Scene key={'home'} component={Drawer} initial={'tabBar'}>
-        {/* Tabbar */}
-        {TabsScenes}
-      </Scene>
-
-      {/* General */}
-      <Scene
-        clone
-        key={'comingSoon'}
-        title={'Coming Soon'}
-        component={Placeholder}
-        analyticsDesc={'Placeholder: Coming Soon'}
-      />
-    </Scene>
   </Scene>, 
 );

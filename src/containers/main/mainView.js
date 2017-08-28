@@ -14,7 +14,6 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { solveSudoku } from '../../logics'
 // Consts and Libs
 import Table from "../../components/table"
-import Sidebar from "./sidebar"
 import DrawerView from '@containers/ui/DrawerContainer';
 
 

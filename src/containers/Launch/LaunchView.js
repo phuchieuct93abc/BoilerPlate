@@ -9,10 +9,8 @@ import { Card, CardItem, CardBody, Tabs, Tab, Container, Form, Item, Input, Labe
 import { connect } from 'react-redux';
 
 // Consts and Libs
-import { AppStyles, AppSizes, AppColors } from '@theme/';
 
 // Components
-import { Spacer } from '@ui/';
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import { FBLogin, FBLoginManager, FBLoginView } from 'react-native-facebook-login';
 const mapStateToProps = ({ firebase: { auth } }) => ({
@@ -30,7 +28,7 @@ export default class AppLaunch extends Component {
   componentDidUpdate = () => {
 
     if (isLoaded) {
-      
+      console.log(this.props.auth)
       if (this.props.auth.uid) {
         Actions.main({ type: 'reset' })
 
