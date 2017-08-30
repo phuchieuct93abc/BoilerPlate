@@ -21,20 +21,23 @@ import { TouchableOpacity } from "react-native"
 
 export default class Table extends Component {
     onPress(value, index) {
+        
         this.props.onSelect(index)
     }
     generateColumn(item, rowIndex) {
         return item.map((item, columnIndex) => {
-            var editableCell = <EditableCell value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} />
+            var onSelected = false
             if(this.props.selectedCell){
-                var {selectedRowIndex,selectedColumnIndex } = this.props.selectedCell
+                var selectedRowIndex =  this.props.selectedCell.rowIndex
+                var selectedColumnIndex =  this.props.selectedCell.columnIndex
                 if(selectedRowIndex == rowIndex && selectedColumnIndex ==columnIndex){
-    
+                    onSelected =true;
                     
                 }
             }
+            var editableCell = <EditableCell onSelected={onSelected} value={item} index={{ rowIndex, columnIndex }} onPress={this.onPress.bind(this)} />
             
-            return (<Col key={rowIndex + "_" + columnIndex}>
+            return (<Col key={rowIndex + "_" + columnIndex} > 
                 {editableCell}
             </Col>)
         }

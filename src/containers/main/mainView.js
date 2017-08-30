@@ -51,6 +51,19 @@ export default class MainView extends Component {
   constructor(props) {
     super(props)
     this.isShowKeyboard = this.isShowKeyboard.bind(this)
+    this.updateDisableButons = this.updateDisableButons.bind(this);
+    this.state = {
+      selectedCell: null,
+      disabledButtons: []
+    }
+  }
+
+  updateDisableButons() {
+    let index = this.state.selectedCell;
+    if (index) {
+      return this.getDisableButton(index.rowIndex, index.columnIndex);
+    }
+    return [];
   }
   logout() {
     this.props.firebase.logout();
@@ -64,7 +77,41 @@ export default class MainView extends Component {
     this.drawer._root.open()
   };
   onPress(index) {
-    this.setState(index)
+
+    this.setState({ selectedCell: index })
+
+  }
+  getDisableButton(rowIndex, columnIndex) {
+    var disableColumnNumbers = [];
+    var disableRowNumbers = [];
+    var diableBlockNumber = [];
+
+    for (var i = 0; i < 9; i++) {
+      if (this.props.table[rowIndex][i] != 0) {
+        disableColumnNumbers.push(this.props.table[rowIndex][i])
+      }
+
+    }
+    for (var i = 0; i < 9; i++) {
+      if (this.props.table[i][columnIndex] != 0) {
+        disableRowNumbers.push(this.props.table[i][columnIndex])
+      }
+
+    }
+
+    var rowBlock = parseInt(rowIndex / 3);
+    var columnBlock = parseInt(columnIndex / 3);
+    for (var i = 3 * rowBlock; i < 3 * rowBlock + 3; i++) {
+      for (var j = 3 * columnBlock; j < 3 * columnBlock + 3; j++) {
+        if (this.props.table[i][j] != 0) {
+          diableBlockNumber.push(this.props.table[i][j])
+
+        }
+      }
+
+    }
+
+    return disableColumnNumbers.concat(disableRowNumbers).concat(diableBlockNumber)
   }
 
   solve() {
@@ -72,8 +119,6 @@ export default class MainView extends Component {
     var shouldContinue = true;
     solveSudoku(this.props.table, 0, 0, (result) => {
       shouldContinue = false;
-      console.log(result)
-
       self.props.set(result)
     }, () => {
       return shouldContinue;
@@ -83,8 +128,8 @@ export default class MainView extends Component {
   }
   onKeyboardPress(value) {
     var updateData = {
-      rowIndex: this.state.rowIndex,
-      columnIndex: this.state.columnIndex,
+      rowIndex: this.state.selectedCell.rowIndex,
+      columnIndex: this.state.selectedCell.columnIndex,
       value
     }
 
@@ -92,17 +137,18 @@ export default class MainView extends Component {
 
   }
   isShowKeyboard() {
-    return this.state && this.state.rowIndex != null;
+    return this.state && this.state.selectedCell != null;
+
   }
   render = () => (
 
     <Drawer
       ref={(ref) => { this.drawer = ref; }}
-      content={<DrawerView/>}
+      content={<DrawerView />}
       onClose={() => this.closeDrawer()} >
       <Container>
         <Header>
-        <Left>
+          <Left>
             <Button transparent onPress={this.openDrawer.bind(this)}>
               <Icon name='menu' />
             </Button>
@@ -114,9 +160,9 @@ export default class MainView extends Component {
         </Header>
         <Content style={{ padding: 10 }}>
           <Card>
-            <Table table={this.props.table} onSelect={this.onPress.bind(this)} />
+            <Table selectedCell={this.state.selectedCell} table={this.props.table} onSelect={this.onPress.bind(this)} />
           </Card>{
-            this.isShowKeyboard() && <Keyboard onPress={this.onKeyboardPress.bind(this)} />
+            this.isShowKeyboard() && <Keyboard disabledButtons={this.updateDisableButons()} onPress={this.onKeyboardPress.bind(this)} />
 
           }
 

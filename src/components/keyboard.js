@@ -64,7 +64,7 @@ export default class Keyboard extends Component {
         }
     }
     isDisable(buttonValue) {
-        return disableButton.includes(buttonValue);
+        return this.props.disabledButtons.includes(buttonValue);
     }
 
     render = () => (

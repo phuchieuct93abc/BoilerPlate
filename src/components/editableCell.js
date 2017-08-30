@@ -45,7 +45,14 @@ const style = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-         borderWidth: 0.5, borderColor: '#d6d7da',
+        borderWidth: 0.5,
+    },
+    selected: {
+        borderColor: 'blue'
+    },
+    nonSelected: {
+        borderColor: '#d6d7da',
+
     }
 
 
@@ -53,24 +60,23 @@ const style = StyleSheet.create({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class EditableCell extends Component {
 
-    show(){
+    show() {
 
-        if(this.props.value!=0){
-            return (  <Text>{this.props.value}</Text>)
+        if (this.props.value != 0) {
+            return (<Text>{this.props.value}</Text>)
         }
 
     }
-    render = () => (
-        
-        <TouchableOpacity style={style.cell} onPress={() => { this.props.onPress(this.props.value, this.props.index) }}>
-          {this.show()}
+    render = () => {
+        let borderStyle = this.props.onSelected?style.selected:style.nonSelected;
+        return (<TouchableOpacity style={[style.cell,borderStyle]} onPress={() => { this.props.onPress(this.props.value, this.props.index) }}>
+            {this.show()}
 
         </TouchableOpacity>
+        )
+    }
 
 
 
-    )
-}
 
-/* Export Component ==================================================================== */
-;
+};
